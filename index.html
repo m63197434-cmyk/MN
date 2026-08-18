@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>تدريب القدرات</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #16241c;
+    --panel: #1f3327;
+    --panel-2: #22392b;
+    --chalk: #f2ede1;
+    --chalk-dim: #cfc9ba;
+    --yellow: #e3b23c;
+    --red: #c1502e;
+    --green: #6ea36a;
+    --line: rgba(242,237,225,0.14);
+    --line-strong: rgba(242,237,225,0.28);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(ellipse at top left, rgba(255,255,255,0.03), transparent 60%),
+      var(--bg);
+    color:var(--chalk);
+    font-family:'Cairo', sans-serif;
+    min-height:100vh;
+    padding:20px 14px 60px;
+  }
+  .wrap{max-width:520px;margin:0 auto;}
+
+  header{text-align:center;margin-bottom:22px;}
+  header h1{
+    font-weight:900;
+    font-size:1.9rem;
+    letter-spacing:0.5px;
+    margin:0 0 4px;
+    color:var(--chalk);
+    text-shadow: 0 0 14px rgba(242,237,225,0.15);
+  }
+  header p{margin:0;color:var(--chalk-dim);font-size:0.85rem;}
+  .chalk-rule{height:2px;width:70px;margin:14px auto 0;background:var(--yellow);opacity:0.7;border-radius:2px;}
+
+  .stamp-row{display:flex;justify-content:center;margin:26px 0 24px;}
+  .stamp{
+    position:relative;width:132px;height:132px;border-radius:50%;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    border:3px solid var(--yellow);transform:rotate(-6deg);
+    filter:url(#chalk-rough);background:rgba(227,178,60,0.06);
+  }
+  .stamp .grade{font-family:'IBM Plex Mono', monospace;font-weight:600;font-size:2.4rem;color:var(--yellow);line-height:1;}
+  .stamp .label{font-size:0.62rem;color:var(--chalk-dim);margin-top:6px;letter-spacing:1px;}
+
+  .stats-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:20px;}
+  .stat-card{background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:12px 8px;text-align:center;}
+  .stat-card .val{font-family:'IBM Plex Mono', monospace;font-weight:600;font-size:1.3rem;color:var(--yellow);}
+  .stat-card .lbl{font-size:0.65rem;color:var(--chalk-dim);margin-top:4px;}
+
+  .qform{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px;margin-bottom:20px;}
+  .qform .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px;}
+  .qform label{font-size:0.68rem;color:var(--chalk-dim);display:block;margin-bottom:4px;}
+  .qform input{
+    width:100%;background:var(--panel-2);border:1px solid var(--line-strong);border-radius:7px;color:var(--chalk);
+    padding:9px 8px;font-family:'IBM Plex Mono', monospace;font-size:0.9rem;text-align:center;
+  }
+  .qform input:focus{outline:none;border-color:var(--yellow);}
+  .qform button{
+    width:100%;background:var(--yellow);border:none;border-radius:8px;color:#16241c;
+    font-family:'Cairo', sans-serif;font-weight:700;padding:11px;cursor:pointer;font-size:0.9rem;
+  }
+  .qform button:active{transform:scale(0.98);}
+
+  .section-title{font-size:0.8rem;color:var(--chalk-dim);margin:0 2px 10px;}
+
+  .empty{padding:28px 16px;text-align:center;color:var(--chalk-dim);font-size:0.85rem;background:var(--panel);border:1px solid var(--line);border-radius:10px;}
+
+  .session{
+    background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:12px 14px;margin-bottom:8px;
+    display:grid;grid-template-columns:1fr auto;gap:6px;align-items:center;
+  }
+  .session .meta{font-size:0.7rem;color:var(--chalk-dim);}
+  .session .figures{font-family:'IBM Plex Mono', monospace;font-size:0.85rem;color:var(--chalk);display:flex;gap:12px;margin-top:4px;}
+  .session .figures span.acc-good{color:var(--green);}
+  .session .figures span.acc-bad{color:var(--red);}
+  .session .del{background:none;border:none;color:var(--red);font-size:1rem;cursor:pointer;padding:4px;}
+
+  .status{text-align:center;font-size:0.72rem;color:var(--chalk-dim);margin-top:14px;min-height:16px;}
+  .reset-link{
+    display:block;text-align:center;margin-top:22px;color:var(--chalk-dim);font-size:0.72rem;
+    text-decoration:underline;cursor:pointer;background:none;border:none;
+  }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute">
+  <filter id="chalk-rough">
+    <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" result="noise" seed="7"/>
+    <feDisplacementMap in="SourceGraphic" in2="noise" scale="4"/>
+  </filter>
+</svg>
+
+<div class="wrap">
+  <header>
+    <h1>تدريب القدرات</h1>
+    <p>سجّل جلساتك وتابع نسبة الصح أول بأول</p>
+    <div class="chalk-rule"></div>
+  </header>
+
+  <div class="stamp-row">
+    <div class="stamp">
+      <div class="grade" id="qOverallAcc">—</div>
+      <div class="label">متوسط نسبة الصح</div>
+    </div>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="val" id="statSessions">0</div>
+      <div class="lbl">جلسات</div>
+    </div>
+    <div class="stat-card">
+      <div class="val" id="statQuestions">0</div>
+      <div class="lbl">إجمالي الأسئلة</div>
+    </div>
+  </div>
+
+  <div class="qform">
+    <div class="grid3">
+      <div>
+        <label>عدد الأسئلة</label>
+        <input type="number" id="qTotal" min="1" placeholder="40">
+      </div>
+      <div>
+        <label>عدد الأخطاء</label>
+        <input type="number" id="qWrong" min="0" placeholder="6">
+      </div>
+      <div>
+        <label>الوقت (دقيقة)</label>
+        <input type="number" id="qTime" min="1" step="0.5" placeholder="55">
+      </div>
+    </div>
+    <button id="qAddBtn">حفظ الجلسة</button>
+  </div>
+
+  <p class="section-title">سجل الجلسات</p>
+  <div id="qSessions"></div>
+
+  <div class="status" id="status"></div>
+  <button class="reset-link" id="resetBtn">مسح كل البيانات</button>
+</div>
+
+<script>
+const STORAGE_QUDRAT = 'qudrat:sessions';
+let sessions = [];
+
+const statusEl = document.getElementById('status');
+function setStatus(msg, timeout){
+  statusEl.textContent = msg;
+  if(timeout){ setTimeout(()=>{ if(statusEl.textContent === msg) statusEl.textContent=''; }, timeout); }
+}
+
+const qSessionsEl = document.getElementById('qSessions');
+const qOverallAccEl = document.getElementById('qOverallAcc');
+const statSessions = document.getElementById('statSessions');
+const statQuestions = document.getElementById('statQuestions');
+
+async function loadSessions(){
+  setStatus('جارٍ تحميل بياناتك…');
+  try{
+    const saved = localStorage.getItem(STORAGE_QUDRAT);
+    sessions = saved ? JSON.parse(saved) : [];
+    if(!Array.isArray(sessions)) sessions = [];
+  }catch(e){ sessions = []; }
+  setStatus('');
+  renderSessions();
+}
+
+async function saveSessions(){
+  try{
+    localStorage.setItem(STORAGE_QUDRAT, JSON.stringify(sessions));
+  }catch(e){ setStatus('تعذّر حفظ البيانات على هذا المتصفح', 3000); }
+}
+
+function fmtDate(ts){
+  const d = new Date(ts);
+  return d.toLocaleDateString('ar-SA', { day:'numeric', month:'short' });
+}
+
+function renderSessions(){
+  qSessionsEl.innerHTML = '';
+  if(sessions.length === 0){
+    qSessionsEl.innerHTML = '<div class="empty">ما فيه جلسات بعد. سجّل أول جلسة فوق 👆</div>';
+  } else {
+    [...sessions].sort((a,b)=>b.createdAt - a.createdAt).forEach(s=>{
+      const correct = s.total - s.wrong;
+      const acc = (correct / s.total) * 100;
+      const accClass = acc >= 80 ? 'acc-good' : (acc < 60 ? 'acc-bad' : '');
+      const div = document.createElement('div');
+      div.className = 'session';
+      div.innerHTML = `
+        <div>
+          <div class="meta">${fmtDate(s.createdAt)} · ${s.total} سؤال · ${s.time} د</div>
+          <div class="figures">
+            <span class="${accClass}">${acc.toFixed(0)}% صح</span>
+            <span>${correct} صحيح</span>
+            <span>${s.wrong} خطأ</span>
+          </div>
+        </div>
+        <button class="del" data-id="${s.id}" aria-label="حذف">✕</button>
+      `;
+      qSessionsEl.appendChild(div);
+    });
+  }
+
+  qSessionsEl.querySelectorAll('.del').forEach(btn=>{
+    btn.addEventListener('click', async (e)=>{
+      const id = e.target.dataset.id;
+      sessions = sessions.filter(x=>x.id !== id);
+      renderSessions();
+      await saveSessions();
+      setStatus('تم الحذف', 1500);
+    });
+  });
+
+  if(sessions.length){
+    const totalQ = sessions.reduce((s,x)=>s+Number(x.total),0);
+    const totalW = sessions.reduce((s,x)=>s+Number(x.wrong),0);
+    const acc = ((totalQ - totalW) / totalQ) * 100;
+    qOverallAccEl.textContent = acc.toFixed(0) + '%';
+    qOverallAccEl.style.fontSize = '2rem';
+    statSessions.textContent = sessions.length;
+    statQuestions.textContent = totalQ;
+  } else {
+    qOverallAccEl.textContent = '—';
+    qOverallAccEl.style.fontSize = '2.4rem';
+    statSessions.textContent = '0';
+    statQuestions.textContent = '0';
+  }
+}
+
+document.getElementById('qAddBtn').addEventListener('click', async ()=>{
+  const totalInput = document.getElementById('qTotal');
+  const wrongInput = document.getElementById('qWrong');
+  const timeInput = document.getElementById('qTime');
+  const total = parseInt(totalInput.value);
+  const wrong = parseInt(wrongInput.value);
+  const time = parseFloat(timeInput.value);
+  if(!total || total < 1 || isNaN(wrong) || wrong < 0 || wrong > total || !time || time <= 0){
+    setStatus('تأكد من إدخال أرقام صحيحة (الأخطاء ≤ الأسئلة)', 2500);
+    return;
+  }
+  sessions.push({
+    id: 'q_' + Date.now() + '_' + Math.random().toString(36).slice(2,7),
+    total, wrong, time,
+    createdAt: Date.now()
+  });
+  totalInput.value = ''; wrongInput.value = ''; timeInput.value = '';
+  renderSessions();
+  await saveSessions();
+  setStatus('تم حفظ الجلسة ✓', 1500);
+});
+
+document.getElementById('resetBtn').addEventListener('click', async ()=>{
+  if(!confirm('متأكد إنك تبي تمسح كل جلسات التدريب؟')) return;
+  sessions = [];
+  renderSessions();
+  await saveSessions();
+  setStatus('تم مسح البيانات', 2000);
+});
+
+loadSessions();
+</script>
+</body>
+</html>
